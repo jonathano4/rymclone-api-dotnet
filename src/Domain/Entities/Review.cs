@@ -1,6 +1,8 @@
-﻿namespace RymCloneApi.src.Domain.Entities
+﻿using RymCloneApi.src.Domain.Entities.Core;
+
+namespace RymCloneApi.src.Domain.Entities
 {
-  public class Review
+  public class Review : Entity
   {
     public int? Id { get; set; }
     public int Score { get; set; }
@@ -9,13 +11,9 @@
     public Album Album { get; set; }
     public int UserId { get; set; }
     public User User { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
 
-    public Review()
+    public Review() : base()
     {
-      CreatedAt = DateTime.UtcNow;
-      UpdatedAt = DateTime.UtcNow;
     }
   }
 }

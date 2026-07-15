@@ -50,6 +50,16 @@ namespace RymCloneApi.src.Controllers.v1
       return album.FromAlbumToAlbumResponse();
     }
 
+    [HttpGet("albums/featured")]
+    public async Task<ActionResult<AlbumResponseDTO>> Featured()
+    {
+      var featuredAlbum = await _albumsRepository.GetMostRecentAlbumAsync();
+
+      if (featuredAlbum == null) return NotFound();
+
+      return featuredAlbum.FromAlbumToAlbumResponse();
+    }
+
     [HttpPost("albums")]
     public async Task<ActionResult> Create(CreateAlbumRequestDTO albumDTO)
     {

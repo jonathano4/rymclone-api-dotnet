@@ -15,6 +15,8 @@ namespace RymCloneApi.src.Persistence.Configurations
       builder.Property(u => u.LastName).HasColumnName("last_name").HasColumnType("varchar");
       builder.Property(u => u.Birthday).HasColumnName("birthday");
       builder.Property(u => u.Bio).HasColumnName("bio").HasColumnType("text");
+      builder.Property(e => e.CreatedAt).IsRequired().HasColumnName("created_at");
+      builder.Property(e => e.UpdatedAt).IsRequired().HasColumnName("updated_at");
       builder.HasIndex(u => u.Username).IsUnique();
     }
   }

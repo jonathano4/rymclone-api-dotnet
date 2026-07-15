@@ -1,10 +1,11 @@
+using RymCloneApi.src.Domain.Entities.Core;
 using System.ComponentModel.DataAnnotations;
 
 namespace RymCloneApi.src.Domain.Entities;
 
-public class Genre
+public class Genre : Entity
 {
-  public Genre()
+  public Genre() : base()
   {
     Albums = [];
   }

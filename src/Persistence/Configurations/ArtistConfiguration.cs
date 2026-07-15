@@ -17,6 +17,8 @@ public class ArtistConfiguration : IEntityTypeConfiguration<Artist>
       .HasMaxLength(250)
       .HasColumnType("varchar")
       .IsRequired();
+    builder.Property(e => e.CreatedAt).IsRequired().HasColumnName("created_at");
+    builder.Property(e => e.UpdatedAt).IsRequired().HasColumnName("updated_at");
     //builder.HasMany<Album>(e => e.Albums).WithOne().HasForeignKey(al => al.ArtistId).OnDelete(DeleteBehavior.Restrict);
   }
 }

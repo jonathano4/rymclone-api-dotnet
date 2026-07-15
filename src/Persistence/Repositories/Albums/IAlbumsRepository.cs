@@ -5,5 +5,6 @@ namespace RymCloneApi.src.Persistence.Repositories.Albums
 {
   public interface IAlbumsRepository : IRepository<Album>
   {
+    public Task<Album?> GetMostRecentAlbumAsync();
   }
 }

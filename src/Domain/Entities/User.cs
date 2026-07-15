@@ -1,6 +1,8 @@
-﻿namespace RymCloneApi.src.Domain.Entities
+﻿using RymCloneApi.src.Domain.Entities.Core;
+
+namespace RymCloneApi.src.Domain.Entities
 {
-  public class User
+  public class User : Entity
   {
     public int? Id { get; set; }
     public String Username { get; set; }
@@ -10,7 +12,7 @@
     public String? Bio { get; set; }
     public ICollection<Review> Reviews { get; set; }
 
-    public User()
+    public User() : base()
     {
       Reviews = [];
     }

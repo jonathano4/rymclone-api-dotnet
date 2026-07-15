@@ -17,6 +17,8 @@ public class GenreConfiguration : IEntityTypeConfiguration<Genre>
       .HasMaxLength(100)
       .HasColumnType("varchar")
       .IsRequired();
+    builder.Property(e => e.CreatedAt).IsRequired().HasColumnName("created_at");
+    builder.Property(e => e.UpdatedAt).IsRequired().HasColumnName("updated_at");
     builder.HasMany<Album>(e => e.Albums).WithMany(e => e.Genres).UsingEntity(
       "AlbumGenre",
       rightTable => rightTable.HasOne(typeof(Album)).WithMany().HasForeignKey("AlbumId"),

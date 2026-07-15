@@ -23,6 +23,8 @@ public class AlbumConfiguration : IEntityTypeConfiguration<Album>
       .HasColumnType("date")
       .IsRequired();
     builder.Property(e => e.ArtistId).HasColumnName("artist_id");
+    builder.Property(e => e.CreatedAt).IsRequired().HasColumnName("created_at");
+    builder.Property(e => e.UpdatedAt).IsRequired().HasColumnName("updated_at");
     builder.HasOne(e => e.Artist).WithMany(e => e.Albums).HasForeignKey(e => e.ArtistId).OnDelete(DeleteBehavior.Restrict);
   }
 }

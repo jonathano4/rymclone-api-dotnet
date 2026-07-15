@@ -1,3 +1,4 @@
+using RymCloneApi.src.Domain.Entities.Core;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -5,9 +6,9 @@ using System.Text.Json.Serialization;
 
 namespace RymCloneApi.src.Domain.Entities
 {
-  public class Album
+  public class Album : Entity
   {
-    public Album()
+    public Album() : base()
     {
       Genres = [];
       Reviews = [];
