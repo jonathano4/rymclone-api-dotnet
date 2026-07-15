@@ -1,0 +1,12 @@
+services: 
+  db-rym:
+      image: postgres:18
+      ports:
+        - 5432:5432
+      volumes:
+        - db-rym-data:/var/lib/postgresql
+      environment:
+        POSTGRES_USER: docker
+        POSTGRES_PASSWORD: docker123
+volumes:
+  db-rym-data:
