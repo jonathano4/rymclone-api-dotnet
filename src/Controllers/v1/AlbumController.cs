@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,14 +21,21 @@ namespace RymCloneApi.src.Controllers.v1
     private readonly IAlbumsRepository _albumsRepository;
     private readonly IGenresRepository _genresRepository;
     private readonly IArtistsRepository _artistsRepository;
+    private readonly ILogger<Program> _logger;
     private readonly IUnitOfWork _unitOfWork;
 
-    public AlbumController(IAlbumsRepository albumsRepository, IGenresRepository genresRepository, IArtistsRepository artistsRepository, IUnitOfWork unitOfWork)
+    public AlbumController(
+      IAlbumsRepository albumsRepository,
+      IGenresRepository genresRepository,
+      IArtistsRepository artistsRepository,
+      IUnitOfWork unitOfWork,
+      ILogger<Program> logger)
     {
       _albumsRepository = albumsRepository;
       _genresRepository = genresRepository;
       _artistsRepository = artistsRepository;
       _unitOfWork = unitOfWork;
+      _logger = logger;
     }
 
     [HttpGet("albums")]
@@ -36,6 +44,7 @@ namespace RymCloneApi.src.Controllers.v1
       var albums = await _albumsRepository.GetAllAsync(albums => albums.Artist, albums => albums.Genres);
 
       if (!albums.Any()) return NoContent();
+      _logger.LogInformation($"Alguns álbums foram buscados em {DateTimeOffset.UtcNow.ToString()}");
       IEnumerable<AlbumResponseDTO> albumsDTO = albums.Select<Album, AlbumResponseDTO>(album => album.FromAlbumToAlbumResponse());
 
       return Ok(albumsDTO);
@@ -65,6 +74,7 @@ namespace RymCloneApi.src.Controllers.v1
     {
       var genres = _genresRepository.FindAllGenresById(albumDTO.GenresIds);
       var albums = albumDTO.FromCreateArtistRequestToAlbum(genres);
+      _logger.LogInformation($"Album {albumDTO.Title}");
       await _albumsRepository.CreateAsync(albums);
       await _unitOfWork.Commit();
 

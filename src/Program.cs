@@ -1,6 +1,5 @@
 using dotenv.net;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using RymCloneApi.src.Exceptions.Handlers;
 using RymCloneApi.src.Exceptions.InternalServerErrorException;
 using RymCloneApi.src.Exceptions.NotFoundErrorException;
@@ -13,6 +12,7 @@ using RymCloneApi.src.Persistence.Repositories.Artists;
 using RymCloneApi.src.Persistence.Repositories.Genres;
 using RymCloneApi.src.Persistence.Repositories.Reviews;
 using RymCloneApi.src.Persistence.UnitOfWork;
+using RymCloneApi.src.Providers;
 using Scalar.AspNetCore;
 using System.Text.Json.Serialization;
 
@@ -37,6 +37,18 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 });
 builder.Services.AddControllers().AddNewtonsoftJson();
 
+//builder.Services.AddApplicationInsightsTelemetry(options =>
+//{
+//  options.ConnectionString = EnvProvider.Instance.GetStringValue("APP_INSIGHTS_TELEMETRY_CONNECTION_STRING");
+//});
+
+builder.Services.AddAuthentication()
+  .AddGoogle(options =>
+  {
+    options.ClientId = EnvProvider.Instance.GetStringValue("GOOGLE_AUTH_CLIENT_ID");
+    options.ClientSecret = EnvProvider.Instance.GetStringValue("GOOGLE_AUTH_CLIENT_SECRET");
+  });
+
 builder.Services.AddScoped<AppDbContextInitializer>();
 builder.Services.AddScoped<IAppDbContext>(provider => provider.GetRequiredService<AppDbContext>());
 builder.Services.AddDbContext<AppDbContext>();
@@ -58,13 +70,6 @@ if (app.Environment.IsDevelopment())
     options.WithTheme(ScalarTheme.Laserwave);
     options.ForceDarkMode();
   });
-
-  using (var scope = app.Services.CreateScope())
-  {
-    var dbInitializer = scope.ServiceProvider.GetRequiredService<AppDbContextInitializer>();
-
-    await dbInitializer.Seed();
-  }
 }
 
 app.UseHttpsRedirection();
